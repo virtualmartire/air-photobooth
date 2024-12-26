@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shared Photobooth</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="container">
+        <h1>Shared Photobooth</h1>
+        
+        <div class="photo-container">
+            {% if photo %}
+                <img src="{{ url_for('static', filename='uploads/' + photo) }}" alt="Current photo">
+            {% else %}
+                <div class="no-photo">No photos yet</div>
+            {% endif %}
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form action="{{ url_for('upload_photo') }}" method="post" enctype="multipart/form-data" class="upload-form">
+            <input type="file" name="photo" accept="image/*" required>
+            <button type="submit">Send a photo</button>
+        </form>
+    </div>
+
+    <div class="logout-container">
+        <a href="{{ url_for('logout') }}" class="logout-button">Logout</a>
+    </div>
+    
+    <script>
+        setInterval(function() {
+            window.location.reload();
+        }, 2 * 60 * 1000);  // Refresh the page every 2 minutes to get new photo
+    </script>
+</body>
+</html>

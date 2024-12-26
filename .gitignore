@@ -1,0 +1,4 @@
+static/uploads/*
+!README.md
+
+.DS_Store
