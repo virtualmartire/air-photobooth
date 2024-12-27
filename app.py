@@ -51,11 +51,6 @@ def require_password(f):
         return f(*args, **kwargs)
     return decorated_function
 
-@app.route('/logout')
-def logout():
-    session.clear()
-    return redirect(url_for('login'))
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
