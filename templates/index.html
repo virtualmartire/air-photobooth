@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Shared Photobooth</title>
+    <title>air-photobooth</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
     <div class="container">
-        <h1>Shared Photobooth</h1>
+        <h1>air-photobooth</h1>
         
         <div class="photo-container">
             {% if photo %}
@@ -27,7 +27,7 @@
 
         <form action="{{ url_for('upload_photo') }}" method="post" enctype="multipart/form-data" class="upload-form">
             <input type="file" name="photo" accept="image/*" required>
-            <button type="submit">Send a photo</button>
+            <button type="submit">Upload</button>
         </form>
     </div>
     
