@@ -7,6 +7,7 @@ import time
 from datetime import datetime
 from functools import wraps
 import sqlite3
+import secrets
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
@@ -14,9 +15,11 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def init_app():
+
     app = Flask(__name__)
-    app.config['SECRET_KEY'] = 'your-secret-key-here'
-    app.config['PASSWORD'] = 'your-secure-password-here'
+
+    app.config['SECRET_KEY'] = secrets.token_hex(16)        # to manage cryptographic things
+    app.config['PASSWORD'] = os.environ.get('PASSWORD')
     app.config['UPLOAD_FOLDER'] = 'static/uploads'
     app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 

@@ -30,4 +30,4 @@ EXPOSE 5001
 # Run the application
 CMD ["python", "startup.py"]
 
-# docker run -d -p 5001:5001 -v ./static/uploads:/app/static/uploads air-photobooth
+# docker run -d -p 5001:5001 -v ./static/uploads:/app/static/uploads -e PASSWORD="password" air-photobooth
