@@ -7,7 +7,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Login</h1>
+        <h2>Login</h2>
         
         {% with messages = get_flashed_messages() %}
             {% if messages %}
@@ -17,7 +17,7 @@
             {% endif %}
         {% endwith %}
 
-        <form method="post" class="login-form">
+        <form method="POST" class="login-form">
             <div class="form-group">
                 <input type="password" name="password" placeholder="Enter password" required>
             </div>
