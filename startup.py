@@ -1,6 +1,7 @@
 from app import app, update_displayed_photo
 from threading import Thread
 from gunicorn.app.base import BaseApplication
+import os
 
 class StandaloneApplication(BaseApplication):
     def __init__(self, app, options=None):
@@ -21,19 +22,22 @@ class StandaloneApplication(BaseApplication):
         return self.application
 
 def main():
+
+    # Get port from environment variable (Heroku sets this)
+    port = int(os.environ.get("PORT", 5001))
+    
     # Start the photo update thread
     thread = Thread(target=update_displayed_photo, daemon=True)
     thread.start()
-
+    
     # Configure and start Gunicorn
     options = {
-        "bind": "0.0.0.0:5001",  # Listen on all network interfaces
+        "bind": f"0.0.0.0:{port}",  # Use dynamic port
         "workers": 3,
         "timeout": 120,
-        # Add these options for better network handling
         "keepalive": 5,
-        "access-logfile": "-",  # Log to stdout
-        "error-logfile": "-"    # Log to stdout
+        "access-logfile": "-",
+        "error-logfile": "-"
     }
 
     StandaloneApplication(app, options).run()
