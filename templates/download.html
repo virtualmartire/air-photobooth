@@ -1,21 +1,30 @@
-{% extends "base.html" %}
-{% block content %}
-<div class="container">
-    <h2>Download Photos</h2>
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-danger">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-    <form method="POST">
-        <div class="form-group">
-            <label for="download_password">Download Password:</label>
-            <input type="password" class="form-control" id="download_password" name="download_password" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Download All Photos</button>
-    </form>
-    <a href="{{ url_for('index') }}" class="btn btn-secondary mt-3">Back to Gallery</a>
-</div>
-{% endblock %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>air-photobooth</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="container">
+        <h2>Download Photos</h2>
+        
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" class="login-form">
+            <div class="form-group">
+                <input type="password" name="download_password" placeholder="Enter download password" required>
+            </div>
+            <button type="submit">Download All Photos</button>
+        </form>
+        
+        <a href="{{ url_for('index') }}" class="btn">Back to Gallery</a>
+    </div>
+</body>
+</html>
