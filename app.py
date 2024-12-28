@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, redirect, url_for, session
+from flask import Flask, render_template, request, flash, redirect, url_for, session, send_file
 import os
 from werkzeug.utils import secure_filename
 from database import init_db, get_db, close_db, get_current_photo, update_current_photo, DATABASE
@@ -8,6 +8,8 @@ from datetime import datetime
 from functools import wraps
 import sqlite3
 import secrets
+import zipfile
+from io import BytesIO
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
@@ -97,6 +99,34 @@ def upload_photo():
     flash('Invalid file type')
     return redirect(url_for('index'))
 
+@app.route('/download', methods=['GET', 'POST'])
+@require_password
+def download():
+    if request.method == 'POST':
+        if request.form.get('download_password') == os.environ.get('DOWNLOAD_PASSWORD'):
+            # Create zip file in memory
+            memory_file = BytesIO()
+            with zipfile.ZipFile(memory_file, 'w') as zf:
+                db = get_db()
+                cursor = db.cursor()
+                cursor.execute('SELECT filename FROM photos')
+                photos = cursor.fetchall()
+                
+                for photo in photos:
+                    file_path = os.path.join(app.config['UPLOAD_FOLDER'], photo['filename'])
+                    if os.path.exists(file_path):
+                        zf.write(file_path, photo['filename'])
+            
+            memory_file.seek(0)
+            return send_file(
+                memory_file,
+                mimetype='application/zip',
+                as_attachment=True,
+                download_name='photobooth_photos.zip'
+            )
+        flash('Incorrect download password')
+    return render_template('download.html')
+
 def update_displayed_photo():
     """Update the currently displayed photo (runs in background)"""
     while True:
@@ -115,6 +145,7 @@ def update_displayed_photo():
             time.sleep(120)  # Wait 2 minutes
 
 if __name__ == '__main__':
+
     # Start background thread for photo updates
     photo_thread = Thread(target=update_displayed_photo, daemon=True)
     photo_thread.start()

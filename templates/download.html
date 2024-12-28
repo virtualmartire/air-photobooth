@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h2>Download Photos</h2>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-danger">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <form method="POST">
+        <div class="form-group">
+            <label for="download_password">Download Password:</label>
+            <input type="password" class="form-control" id="download_password" name="download_password" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Download All Photos</button>
+    </form>
+    <a href="{{ url_for('index') }}" class="btn btn-secondary mt-3">Back to Gallery</a>
+</div>
+{% endblock %}
