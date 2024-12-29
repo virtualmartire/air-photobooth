@@ -2,11 +2,9 @@ html, body {
     font-family: 'Tahoma', sans-serif;
     margin: 0;
     padding: 0;
-    background: #274480;
     background: linear-gradient(125deg, #274480 0%, #3562c7 50%, #7aa7ff 100%);
     color: #000;
     min-height: 100vh;
-    height: 100vh;
 }
 
 .container {
